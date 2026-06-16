@@ -44,6 +44,9 @@ rules:
   - IP-CIDR6,fc00::/7,DIRECT,no-resolve
   - IP-CIDR6,fe80::/10,DIRECT,no-resolve
 
+  # Custom direct domains.
+  - DOMAIN-SUFFIX,zuiren.cc,DIRECT
+
   # Common ad and tracker blocking. Requires a geosite database.
   - GEOSITE,category-ads-all,REJECT
 
