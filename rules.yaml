@@ -1,0 +1,58 @@
+# Mihomo / Clash rule overrides.
+#
+# Usage:
+# - Merge this file into a Mihomo/Clash profile, or copy the `rules` block.
+# - DIRECT and REJECT are built-in policies.
+# - Rename PROXY below if your proxy group uses another name.
+#
+# Notes:
+# - Android Clash Meta for Android package: com.github.metacubex.clash.meta
+# - Mihomo supports PROCESS-NAME matching; on Android it can match package names.
+
+rules:
+  # Keep Mihomo/Clash clients out of the tunnel to avoid proxy loops.
+  - PROCESS-NAME,com.github.metacubex.clash.meta,DIRECT
+  - PROCESS-NAME,com.github.metacubex.clash,DIRECT
+  - PROCESS-NAME,com.github.kr328.clash,DIRECT
+  - PROCESS-NAME,mihomo,DIRECT
+  - PROCESS-NAME,mihomo.exe,DIRECT
+  - PROCESS-NAME,mihomo-party,DIRECT
+  - PROCESS-NAME,mihomo-party.exe,DIRECT
+  - PROCESS-NAME,clash,DIRECT
+  - PROCESS-NAME,clash.exe,DIRECT
+  - PROCESS-NAME,clash-meta,DIRECT
+  - PROCESS-NAME,clash-meta.exe,DIRECT
+
+  # LAN, loopback, and reserved/private ranges.
+  - DOMAIN,localhost,DIRECT
+  - DOMAIN-SUFFIX,local,DIRECT
+  - IP-CIDR,0.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,100.64.0.0/10,DIRECT,no-resolve
+  - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,169.254.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+  - IP-CIDR,192.0.0.0/24,DIRECT,no-resolve
+  - IP-CIDR,192.0.2.0/24,DIRECT,no-resolve
+  - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,198.18.0.0/15,DIRECT,no-resolve
+  - IP-CIDR,198.51.100.0/24,DIRECT,no-resolve
+  - IP-CIDR,203.0.113.0/24,DIRECT,no-resolve
+  - IP-CIDR,224.0.0.0/4,DIRECT,no-resolve
+  - IP-CIDR,240.0.0.0/4,DIRECT,no-resolve
+  - IP-CIDR6,::1/128,DIRECT,no-resolve
+  - IP-CIDR6,fc00::/7,DIRECT,no-resolve
+  - IP-CIDR6,fe80::/10,DIRECT,no-resolve
+
+  # Common ad and tracker blocking. Requires a geosite database.
+  - GEOSITE,category-ads-all,REJECT
+
+  # Mainland China direct. Requires geosite/geoip data.
+  - GEOSITE,cn,DIRECT
+  - GEOIP,CN,DIRECT,no-resolve
+
+  # Non-China sites go through the proxy group named PROXY.
+  - GEOSITE,geolocation-!cn,PROXY
+
+  # Fallback.
+  - MATCH,PROXY
